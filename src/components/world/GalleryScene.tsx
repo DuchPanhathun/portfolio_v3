@@ -135,6 +135,7 @@ function CentralDisplay() {
   const innerRef = useRef<THREE.Mesh>(null!)
   const ring1Ref = useRef<THREE.Mesh>(null!)
   const ring2Ref = useRef<THREE.Mesh>(null!)
+  const activeProjectId = useGameStore(s => s.activeProjectId)
 
   useFrame((_, delta) => {
     if (outerRef.current) outerRef.current.rotation.y += delta * 0.4
@@ -173,21 +174,23 @@ function CentralDisplay() {
         <cylinderGeometry args={[0.6, 0.6, 0.15, 8]} />
         <meshStandardMaterial color="#00e5ff" emissive="#00e5ff" emissiveIntensity={1} />
       </mesh>
-      {/* Label */}
-      <Html position={[0, 1.8, 0]} center distanceFactor={12}>
-        <div style={{
-          color: '#00e5ff',
-          fontFamily: 'monospace',
-          fontSize: '11px',
-          letterSpacing: '3px',
-          textShadow: '0 0 8px #00e5ff',
-          pointerEvents: 'none',
-          userSelect: 'none',
-          textAlign: 'center',
-        }}>
-          EXPERIENCE CENTER
-        </div>
-      </Html>
+      {/* Label — hidden while a project detail is open */}
+      {!activeProjectId && (
+        <Html position={[0, 1.8, 0]} center distanceFactor={12} zIndexRange={[10, 0]}>
+          <div style={{
+            color: '#00e5ff',
+            fontFamily: 'monospace',
+            fontSize: '11px',
+            letterSpacing: '3px',
+            textShadow: '0 0 8px #00e5ff',
+            pointerEvents: 'none',
+            userSelect: 'none',
+            textAlign: 'center',
+          }}>
+            EXPERIENCE CENTER
+          </div>
+        </Html>
+      )}
       <pointLight color="#00e5ff" intensity={30} distance={8} />
     </group>
   )
@@ -195,6 +198,7 @@ function CentralDisplay() {
 
 function SectorLabel({ sector }: { sector: keyof typeof SECTOR_CONFIG }) {
   const cfg = SECTOR_CONFIG[sector]
+  const activeProjectId = useGameStore(s => s.activeProjectId)
   const positions: Record<string, [number, number, number]> = {
     ai:         [0, 3.5, -17],
     business:   [17, 3.5, 0],
@@ -202,8 +206,9 @@ function SectorLabel({ sector }: { sector: keyof typeof SECTOR_CONFIG }) {
     innovation: [-17, 3.5, 0],
   }
   const pos = positions[sector]
+  if (activeProjectId) return null
   return (
-    <Html position={pos} center distanceFactor={14}>
+    <Html position={pos} center distanceFactor={14} zIndexRange={[10, 0]}>
       <div style={{
         color: cfg.color,
         fontFamily: 'monospace',
@@ -302,8 +307,9 @@ function ExitPortal() {
 
 function ProjectPod({ project }: { project: Project }) {
   const pos   = POD_POSITIONS[project.id]
-  const { nearbyProjectId } = useGameStore()
-  const isNearby = nearbyProjectId === project.id
+  const { nearbyProjectId, activeProjectId } = useGameStore()
+  const isNearby  = nearbyProjectId === project.id
+  const anyOpen   = activeProjectId !== null
   const meshRef  = useRef<THREE.Group>(null!)
   const bobPhase = useRef(Math.random() * Math.PI * 2)
   const scaleRef = useRef(1)
@@ -369,8 +375,8 @@ function ProjectPod({ project }: { project: Project }) {
         </mesh>
         {/* Point light glow */}
         <pointLight color={color} intensity={isNearby ? 8 : 2} distance={4} />
-        {/* HTML label */}
-        <Html position={[0, 0, 0.1]} center distanceFactor={6}>
+        {/* HTML label — hidden while any project detail is open */}
+        {!anyOpen && <Html position={[0, 0, 0.1]} center distanceFactor={6} zIndexRange={[10, 0]}>
           <div style={{
             color: '#ffffff',
             fontFamily: 'monospace',
@@ -404,7 +410,7 @@ function ProjectPod({ project }: { project: Project }) {
               </>
             )}
           </div>
-        </Html>
+        </Html>}
       </group>
 
       {/* Beam down to floor */}
