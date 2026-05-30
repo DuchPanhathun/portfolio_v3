@@ -4,6 +4,7 @@ import { useKeyboard } from '../../hooks/useKeyboard'
 import { useGameStore } from '../../stores/useGameStore'
 import { HumanCharacter } from './HumanCharacter'
 import { POD_POSITIONS } from '../../data/projects'
+import { mobileInput } from '../../hooks/useMobileInput'
 import * as THREE from 'three'
 
 const SPEED           = 5
@@ -116,12 +117,13 @@ export function CharacterController() {
     if (activePanelId || activeProjectId || isTransitioning) return
 
     // ── Jump & gravity ─────────────────────────────────────────────────────────
-    if (keys.current.jump && !jumpConsumed.current && isGrounded.current) {
+    const wantsJump = keys.current.jump || mobileInput.jump
+    if (wantsJump && !jumpConsumed.current && isGrounded.current) {
       jumpConsumed.current = true
       velocityY.current    = JUMP_FORCE
       isGrounded.current   = false
     }
-    if (!keys.current.jump) jumpConsumed.current = false
+    if (!wantsJump) jumpConsumed.current = false
 
     velocityY.current         += GRAVITY * delta
     charRef.current.position.y += velocityY.current * delta
@@ -137,6 +139,9 @@ export function CharacterController() {
     if (keys.current.backward) moveDir.z += 1
     if (keys.current.left)     moveDir.x -= 1
     if (keys.current.right)    moveDir.x += 1
+    // Mobile joystick — add analog input on top of keyboard
+    if (Math.abs(mobileInput.dx) > 0.08) moveDir.x += mobileInput.dx
+    if (Math.abs(mobileInput.dy) > 0.08) moveDir.z += mobileInput.dy
 
     isMovingRef.current = moveDir.length() > 0
 

@@ -9,6 +9,7 @@ import { GalleryScene }         from './components/world/GalleryScene'
 import { CharacterController }  from './components/character/CharacterController'
 import { PanelOverlay }         from './components/ui/PanelOverlay'
 import { ProjectDetailOverlay } from './components/ui/ProjectDetailOverlay'
+import { MobileControls }       from './components/ui/MobileControls'
 import { HUD }                  from './components/ui/HUD'
 import { useGameStore }         from './stores/useGameStore'
 
@@ -71,6 +72,7 @@ export default function App() {
 
       <PanelOverlay />
       <ProjectDetailOverlay />
+      <MobileControls />
       <HUD />
       <TransitionOverlay />
     </div>
