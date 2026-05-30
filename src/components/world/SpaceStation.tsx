@@ -117,20 +117,13 @@ function Ceiling() {
       })}
 
       {/* Central ceiling hub ring */}
-      <mesh position={[0, -0.2, 0]}>
+      {/* <mesh position={[0, -0.2, 0]}>
         <torusGeometry args={[2.5, 0.15, 8, 64]} />
         <meshStandardMaterial {...TRIM_CYAN} />
-      </mesh>
-      <mesh position={[0, -0.2, 0]}>
-        <cylinderGeometry args={[2.2, 2.2, 0.08, 32]} />
-        <meshStandardMaterial color="#e8f4ff" emissive="#aaddff" emissiveIntensity={3} />
-      </mesh>
+      </mesh> */}
+ 
 
-      {/* Outer rim */}
-      <mesh position={[0, -0.12, 0]}>
-        <torusGeometry args={[13.5, 0.12, 8, 64]} />
-        <meshStandardMaterial {...TRIM_BLUE} />
-      </mesh>
+
     </group>
   )
 }
@@ -160,12 +153,6 @@ function Floor() {
         infiniteGrid={false}
       />
 
-      {/* Hex center glow */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.02, 0]}>
-        <ringGeometry args={[0.3, 2.2, 6]} />
-        <meshStandardMaterial color="#00e5ff" emissive="#00e5ff" emissiveIntensity={1.5} transparent opacity={0.4} />
-      </mesh>
-
       {/* Cardinal floor directional arrows */}
       {[0, Math.PI / 2, Math.PI, (3 * Math.PI) / 2].map((a, i) => {
         const px = Math.sin(a) * 6
@@ -178,11 +165,7 @@ function Floor() {
         )
       })}
 
-      {/* Floor edge trim ring */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.02, 0]}>
-        <ringGeometry args={[13.3, 13.6, 32]} />
-        <meshStandardMaterial color="#00e5ff" emissive="#00e5ff" emissiveIntensity={2} transparent opacity={0.6} />
-      </mesh>
+
     </>
   )
 }
@@ -292,8 +275,8 @@ function CentralHologram() {
       </mesh>
       {/* Orbit ring */}
       <mesh ref={ringRef} rotation={[Math.PI / 4, 0, 0]}>
-        <torusGeometry args={[1.2, 0.025, 8, 64]} />
-        <meshStandardMaterial color="#00e5ff" emissive="#00e5ff" emissiveIntensity={4} />
+        {/* <torusGeometry args={[1.2, 0.025, 8, 64]} />
+        <meshStandardMaterial color="#00e5ff" emissive="#00e5ff" emissiveIntensity={4} /> */}
       </mesh>
       {/* Base pedestal */}
       <mesh position={[0, -1.4, 0]}>
@@ -301,8 +284,8 @@ function CentralHologram() {
         <meshStandardMaterial {...HULL_MID} />
       </mesh>
       <mesh position={[0, -1.27, 0]}>
-        <torusGeometry args={[0.55, 0.04, 8, 32]} />
-        <meshStandardMaterial {...TRIM_CYAN} />
+        {/* <torusGeometry args={[0.55, 0.04, 8, 32]} />
+        <meshStandardMaterial {...TRIM_CYAN} /> */}
       </mesh>
     </group>
   )
