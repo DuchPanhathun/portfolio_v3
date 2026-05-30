@@ -302,13 +302,13 @@ function ExitPortal() {
 
 function ProjectPod({ project }: { project: Project }) {
   const pos   = POD_POSITIONS[project.id]
-  const { nearbyProjectId, setActiveProject } = useGameStore()
+  const { nearbyProjectId } = useGameStore()
   const isNearby = nearbyProjectId === project.id
   const meshRef  = useRef<THREE.Group>(null!)
   const bobPhase = useRef(Math.random() * Math.PI * 2)
   const scaleRef = useRef(1)
 
-  useFrame((state, delta) => {
+  useFrame((_, delta) => {
     bobPhase.current += delta * 0.8
     if (meshRef.current) {
       meshRef.current.position.y = pos[1] + Math.sin(bobPhase.current) * 0.12

@@ -34,7 +34,7 @@ export function CharacterController() {
   const {
     activePanelId, setNearbyPanel, setActivePanel,
     galleryMode, enterGallery, exitGallery,
-    nearPortal, setNearPortal,
+    setNearPortal,
     activeProjectId, setActiveProject, setNearbyProject,
     isTransitioning, setTransitioning,
   } = useGameStore()

@@ -1,4 +1,4 @@
-import { Mail, GitBranch, Briefcase, Send } from 'lucide-react'
+import { Mail, GitBranch, Briefcase } from 'lucide-react'
 
 const LINKS = [
   { icon: Mail,      label: 'Email',    value: 'duchpanhathun@gmail.com',      href: 'mailto:duchpanhathun@gmail.com' },
