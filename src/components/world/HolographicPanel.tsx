@@ -7,7 +7,7 @@ import * as THREE from 'three'
 
 const PANEL_META: Record<NonNullable<PanelId>, { label: string; icon: string; color: string }> = {
   about:    { label: 'About Me',   icon: '👤', color: '#4fc3f7' },
-  projects: { label: 'Projects',   icon: '🚀', color: '#ce93d8' },
+  projects: { label: 'Experience',  icon: '💼', color: '#ce93d8' },
   contact:  { label: 'Contact',    icon: '📡', color: '#80cbc4' },
   skills:   { label: 'Skills',     icon: '⚡', color: '#ffcc80' },
 }
@@ -90,40 +90,42 @@ export function HolographicPanel({ id, position, rotation = [0, 0, 0] }: PanelPr
         <meshStandardMaterial color={meta.color} emissive={meta.color} emissiveIntensity={2} />
       </mesh>
 
-      {/* HTML label always visible on panel */}
-      <Html
-        position={[0, 0, 0.08]}
-        center
-        style={{ pointerEvents: 'none', userSelect: 'none' }}
-        distanceFactor={6}
-      >
-        <div style={{
-          color: meta.color,
-          fontFamily: "'Courier New', monospace",
-          textAlign: 'center',
-          textShadow: `0 0 10px ${meta.color}`,
-          width: '180px',
-        }}>
-          <div style={{ fontSize: '28px', lineHeight: 1 }}>{meta.icon}</div>
-          <div style={{ fontSize: '14px', fontWeight: 'bold', letterSpacing: '2px', marginTop: '4px' }}>
-            {meta.label.toUpperCase()}
-          </div>
-          {isNearby && !isActive && (
-            <div style={{
-              fontSize: '11px',
-              marginTop: '8px',
-              color: '#fff',
-              opacity: 0.8,
-              animation: 'pulse 1s infinite',
-            }}>
-              [ PRESS E ]
+      {/* HTML label — hidden while any panel overlay is open */}
+      {!activePanelId && (
+        <Html
+          position={[0, 0, 0.08]}
+          center
+          style={{ pointerEvents: 'none', userSelect: 'none' }}
+          distanceFactor={6}
+        >
+          <div style={{
+            color: meta.color,
+            fontFamily: "'Courier New', monospace",
+            textAlign: 'center',
+            textShadow: `0 0 10px ${meta.color}`,
+            width: '180px',
+          }}>
+            <div style={{ fontSize: '28px', lineHeight: 1 }}>{meta.icon}</div>
+            <div style={{ fontSize: '14px', fontWeight: 'bold', letterSpacing: '2px', marginTop: '4px' }}>
+              {meta.label.toUpperCase()}
             </div>
-          )}
-        </div>
-      </Html>
+            {isNearby && (
+              <div style={{
+                fontSize: '11px',
+                marginTop: '8px',
+                color: '#fff',
+                opacity: 0.8,
+                animation: 'pulse 1s infinite',
+              }}>
+                [ PRESS E ]
+              </div>
+            )}
+          </div>
+        </Html>
+      )}
 
-      {/* Floating interact ring when nearby */}
-      {isNearby && !isActive && (
+      {/* Floating interact ring — only when nearby and no panel open */}
+      {isNearby && !activePanelId && (
         <Billboard>
           <mesh position={[0, 1.2, 0]}>
             <torusGeometry args={[0.2, 0.02, 8, 32]} />

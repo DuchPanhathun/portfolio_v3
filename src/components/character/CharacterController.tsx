@@ -2,6 +2,7 @@ import { useRef, useEffect } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import { useKeyboard } from '../../hooks/useKeyboard'
 import { useGameStore } from '../../stores/useGameStore'
+import { HumanCharacter } from './HumanCharacter'
 import * as THREE from 'three'
 
 const SPEED = 5
@@ -32,6 +33,7 @@ export function CharacterController() {
   const jumpConsumed = useRef(false)
   const velocityY = useRef(0)
   const isGrounded = useRef(true)
+  const isMovingRef = useRef(false)
 
   // Mouse drag to rotate camera
   useEffect(() => {
@@ -97,6 +99,8 @@ export function CharacterController() {
     if (keys.current.left)     moveDir.x -= 1
     if (keys.current.right)    moveDir.x += 1
 
+    isMovingRef.current = moveDir.length() > 0
+
     if (moveDir.length() > 0) {
       moveDir.normalize()
       moveDir.applyEuler(new THREE.Euler(0, camAngle.current, 0))
@@ -143,43 +147,7 @@ export function CharacterController() {
 
   return (
     <group ref={charRef} position={[0, 0, 4]}>
-      {/* Space suit torso */}
-      <mesh position={[0, 0.95, 0]} castShadow>
-        <capsuleGeometry args={[0.3, 1, 8, 16]} />
-        <meshStandardMaterial color="#cdd8e8" metalness={0.4} roughness={0.5} />
-      </mesh>
-      {/* Suit chest plate */}
-      <mesh position={[0, 1.05, 0.27]} castShadow>
-        <boxGeometry args={[0.42, 0.5, 0.08]} />
-        <meshStandardMaterial color="#e0eaf8" metalness={0.5} roughness={0.4} />
-      </mesh>
-      {/* Chest light */}
-      <mesh position={[0, 1.1, 0.32]}>
-        <boxGeometry args={[0.12, 0.06, 0.02]} />
-        <meshStandardMaterial color="#00e5ff" emissive="#00e5ff" emissiveIntensity={5} />
-      </mesh>
-      {/* Helmet */}
-      <mesh position={[0, 1.82, 0]} castShadow>
-        <sphereGeometry args={[0.24, 16, 16]} />
-        <meshStandardMaterial color="#dde8f5" metalness={0.3} roughness={0.4} />
-      </mesh>
-      {/* Visor */}
-      <mesh position={[0, 1.84, 0.17]} rotation={[0.25, 0, 0]}>
-        <boxGeometry args={[0.3, 0.14, 0.06]} />
-        <meshStandardMaterial color="#00e5ff" emissive="#00c0ff" emissiveIntensity={2} transparent opacity={0.75} />
-      </mesh>
-      {/* Shoulder pads */}
-      {([-0.35, 0.35] as const).map((px, i) => (
-        <mesh key={i} position={[px, 1.25, 0]} castShadow>
-          <sphereGeometry args={[0.16, 10, 10]} />
-          <meshStandardMaterial color="#b8cce0" metalness={0.5} roughness={0.4} />
-        </mesh>
-      ))}
-      {/* Backpack / life support */}
-      <mesh position={[0, 0.95, -0.32]} castShadow>
-        <boxGeometry args={[0.3, 0.5, 0.12]} />
-        <meshStandardMaterial color="#a0b4cc" metalness={0.6} roughness={0.35} />
-      </mesh>
+      <HumanCharacter isMovingRef={isMovingRef} />
     </group>
   )
 }

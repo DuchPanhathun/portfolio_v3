@@ -62,7 +62,7 @@ export function HUD() {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px', fontSize: '9px' }}>
           {[
             { dir: '↑ N', label: 'ABOUT'    },
-            { dir: '→ E', label: 'PROJECTS' },
+            { dir: '→ E', label: 'EXP'      },
             { dir: '↓ S', label: 'CONTACT'  },
             { dir: '← W', label: 'SKILLS'   },
           ].map(({ dir, label }) => (

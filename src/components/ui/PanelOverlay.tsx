@@ -10,7 +10,7 @@ const PANEL_CONFIG: Record<NonNullable<PanelId>, {
   title: string; icon: string; color: string; component: React.FC
 }> = {
   about:    { title: 'ABOUT ME',   icon: '👤', color: '#4fc3f7', component: AboutContent    },
-  projects: { title: 'PROJECTS',   icon: '🚀', color: '#ce93d8', component: ProjectsContent },
+  projects: { title: 'EXPERIENCE',  icon: '💼', color: '#ce93d8', component: ProjectsContent },
   skills:   { title: 'SKILLS',     icon: '⚡', color: '#ffcc80', component: SkillsContent   },
   contact:  { title: 'CONTACT',    icon: '📡', color: '#80cbc4', component: ContactContent  },
 }
