@@ -5,11 +5,11 @@ import { useGameStore } from '../../stores/useGameStore'
 import type { PanelId } from '../../stores/useGameStore'
 import * as THREE from 'three'
 
-const PANEL_META: Record<NonNullable<PanelId>, { label: string; icon: string; color: string }> = {
-  about:    { label: 'About Me',   icon: '👤', color: '#4fc3f7' },
-  projects: { label: 'Experience',  icon: '💼', color: '#ce93d8' },
-  contact:  { label: 'Contact',    icon: '📡', color: '#80cbc4' },
-  skills:   { label: 'Skills',     icon: '⚡', color: '#ffcc80' },
+const PANEL_META: Record<NonNullable<PanelId>, { label: string; color: string }> = {
+  about:    { label: 'About Me',   color: '#4fc3f7' },
+  projects: { label: 'Experience', color: '#ce93d8' },
+  contact:  { label: 'Contact',    color: '#80cbc4' },
+  skills:   { label: 'Skills',     color: '#ffcc80' },
 }
 
 interface PanelProps {
@@ -96,25 +96,25 @@ export function HolographicPanel({ id, position, rotation = [0, 0, 0] }: PanelPr
           position={[0, 0, 0.08]}
           center
           style={{ pointerEvents: 'none', userSelect: 'none' }}
-          distanceFactor={6}
+          distanceFactor={10}
         >
           <div style={{
             color: meta.color,
             fontFamily: "'Courier New', monospace",
             textAlign: 'center',
             textShadow: `0 0 10px ${meta.color}`,
-            width: '180px',
+            whiteSpace: 'nowrap',
           }}>
-            <div style={{ fontSize: '28px', lineHeight: 1 }}>{meta.icon}</div>
-            <div style={{ fontSize: '14px', fontWeight: 'bold', letterSpacing: '2px', marginTop: '4px' }}>
+            <div style={{ fontSize: '13px', fontWeight: 'bold', letterSpacing: '3px' }}>
               {meta.label.toUpperCase()}
             </div>
             {isNearby && (
               <div style={{
-                fontSize: '11px',
-                marginTop: '8px',
+                fontSize: '9px',
+                marginTop: '5px',
                 color: '#fff',
                 opacity: 0.8,
+                letterSpacing: '1px',
                 animation: 'pulse 1s infinite',
               }}>
                 [ PRESS E ]

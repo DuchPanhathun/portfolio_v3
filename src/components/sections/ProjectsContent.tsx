@@ -1,3 +1,5 @@
+import { ChevronRight } from 'lucide-react'
+
 const EXPERIENCES = [
   {
     period: 'Nov 2025 – Present',
@@ -161,7 +163,7 @@ export function ProjectsContent() {
                 }}>
                   {exp.highlights.map((h, j) => (
                     <li key={j} style={{ display: 'flex', gap: '8px', fontSize: '11px', color: '#9ab8d8', lineHeight: 1.5 }}>
-                      <span style={{ color: exp.current ? '#00e5ff' : exp.tagColor, flexShrink: 0, marginTop: '1px' }}>▸</span>
+                      <ChevronRight size={11} color={exp.current ? '#00e5ff' : exp.tagColor} style={{ flexShrink: 0, marginTop: '1px' }} />
                       <span>{h}</span>
                     </li>
                   ))}

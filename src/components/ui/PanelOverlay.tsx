@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { X } from 'lucide-react'
 import { useGameStore } from '../../stores/useGameStore'
 import type { PanelId } from '../../stores/useGameStore'
 import { AboutContent }    from '../sections/AboutContent'
@@ -7,12 +8,12 @@ import { SkillsContent }   from '../sections/SkillsContent'
 import { ContactContent }  from '../sections/ContactContent'
 
 const PANEL_CONFIG: Record<NonNullable<PanelId>, {
-  title: string; icon: string; color: string; component: React.FC
+  title: string; color: string; component: React.FC
 }> = {
-  about:    { title: 'ABOUT ME',   icon: '👤', color: '#4fc3f7', component: AboutContent    },
-  projects: { title: 'EXPERIENCE',  icon: '💼', color: '#ce93d8', component: ProjectsContent },
-  skills:   { title: 'SKILLS',     icon: '⚡', color: '#ffcc80', component: SkillsContent   },
-  contact:  { title: 'CONTACT',    icon: '📡', color: '#80cbc4', component: ContactContent  },
+  about:    { title: 'ABOUT ME',   color: '#4fc3f7', component: AboutContent    },
+  projects: { title: 'EXPERIENCE', color: '#ce93d8', component: ProjectsContent },
+  skills:   { title: 'SKILLS',     color: '#ffcc80', component: SkillsContent   },
+  contact:  { title: 'CONTACT',    color: '#80cbc4', component: ContactContent  },
 }
 
 export function PanelOverlay() {
@@ -57,7 +58,6 @@ export function PanelOverlay() {
           background: `linear-gradient(135deg, ${cfg.color}10, transparent)`,
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <span style={{ fontSize: '20px' }}>{cfg.icon}</span>
             <span style={{ color: cfg.color, fontSize: '14px', fontWeight: 'bold', letterSpacing: '3px' }}>
               {cfg.title}
             </span>
@@ -71,7 +71,7 @@ export function PanelOverlay() {
               fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}
           >
-            ✕
+            <X size={14} />
           </button>
         </div>
 

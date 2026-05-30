@@ -1,15 +1,18 @@
+import { Mail, GitBranch, Briefcase, Send } from 'lucide-react'
+
+const LINKS = [
+  { icon: Mail,      label: 'Email',    value: 'duchpanhathun@gmail.com',      href: 'mailto:duchpanhathun@gmail.com' },
+  { icon: GitBranch, label: 'GitHub',   value: 'DuchPanhathun',    href: 'https://github.com/DuchPanhathun' },
+  { icon: Briefcase, label: 'LinkedIn', value: 'Duch Panhathun', href: 'https://www.linkedin.com/in/duch-panhathun-406336235/' },
+]
+
 export function ContactContent() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
       <p style={{ color: '#80cbc4', fontSize: '12px', lineHeight: 1.6, marginBottom: '4px' }}>
         Ready to collaborate? Transmit a signal across the cosmos.
       </p>
-      {[
-        { label: '📧 Email',    value: 'hello@portfolio.dev',       href: 'mailto:hello@portfolio.dev' },
-        { label: '🐙 GitHub',   value: 'github.com/yourhandle',     href: '#' },
-        { label: '💼 LinkedIn', value: 'linkedin.com/in/yourname',  href: '#' },
-        { label: '🐦 Twitter',  value: '@yourhandle',               href: '#' },
-      ].map(({ label, value, href }) => (
+      {LINKS.map(({ icon: Icon, label, value, href }) => (
         <a
           key={label}
           href={href}
@@ -27,7 +30,8 @@ export function ContactContent() {
           onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(128,203,196,0.6)')}
           onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(128,203,196,0.2)')}
         >
-          <span style={{ color: '#80cbc4', fontSize: '12px', minWidth: '80px' }}>{label}</span>
+          <Icon size={14} color="#80cbc4" style={{ flexShrink: 0 }} />
+          <span style={{ color: '#80cbc4', fontSize: '12px', minWidth: '72px' }}>{label}</span>
           <span style={{ color: '#e0f2f1', fontSize: '12px' }}>{value}</span>
         </a>
       ))}
