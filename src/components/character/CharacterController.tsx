@@ -54,6 +54,7 @@ export function CharacterController() {
   const exitConsumed     = useRef(false)
 
   useEffect(() => {
+    // ── Mouse drag (desktop) ─────────────────────────────────────────
     let dragging = false
     let lastX = 0
     const onDown  = (e: MouseEvent) => { dragging = true; lastX = e.clientX }
@@ -70,11 +71,56 @@ export function CharacterController() {
     window.addEventListener('mouseup', onUp)
     window.addEventListener('mousemove', onMove)
     window.addEventListener('wheel', onWheel)
+
+    // ── Touch drag for camera rotation (mobile) ──────────────────────
+    // Only captures touches that start in the upper 60% of the screen
+    // so the joystick / buttons in the lower area don't interfere
+    let camTouchId: number | null = null
+    let lastTouchX = 0
+    const onTouchStart = (e: TouchEvent) => {
+      if (activePanelId || activeProjectId) return
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        const t = e.changedTouches[i]
+        if (t.clientY < window.innerHeight * 0.62 && camTouchId === null) {
+          camTouchId  = t.identifier
+          lastTouchX  = t.clientX
+          break
+        }
+      }
+    }
+    const onTouchMove = (e: TouchEvent) => {
+      if (camTouchId === null || activePanelId || activeProjectId) return
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        const t = e.changedTouches[i]
+        if (t.identifier === camTouchId) {
+          camAngle.current -= (t.clientX - lastTouchX) * 0.006
+          lastTouchX = t.clientX
+          break
+        }
+      }
+    }
+    const onTouchEnd = (e: TouchEvent) => {
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        if (e.changedTouches[i].identifier === camTouchId) {
+          camTouchId = null
+          break
+        }
+      }
+    }
+    window.addEventListener('touchstart',  onTouchStart, { passive: true })
+    window.addEventListener('touchmove',   onTouchMove,  { passive: true })
+    window.addEventListener('touchend',    onTouchEnd)
+    window.addEventListener('touchcancel', onTouchEnd)
+
     return () => {
       window.removeEventListener('mousedown', onDown)
       window.removeEventListener('mouseup', onUp)
       window.removeEventListener('mousemove', onMove)
       window.removeEventListener('wheel', onWheel)
+      window.removeEventListener('touchstart',  onTouchStart)
+      window.removeEventListener('touchmove',   onTouchMove)
+      window.removeEventListener('touchend',    onTouchEnd)
+      window.removeEventListener('touchcancel', onTouchEnd)
     }
   }, [activePanelId, activeProjectId])
 
@@ -199,11 +245,12 @@ export function CharacterController() {
       }
       setNearbyPanel(nearest?.id ?? null)
 
-      if (keys.current.interact && !interactConsumed.current && nearest) {
+      const wantsInteract = keys.current.interact || mobileInput.interact
+      if (wantsInteract && !interactConsumed.current && nearest) {
         interactConsumed.current = true
         setActivePanel(nearest.id)
       }
-      if (!keys.current.interact) interactConsumed.current = false
+      if (!wantsInteract) interactConsumed.current = false
 
     } else {
       // ── Gallery mode ───────────────────────────────────────────────────────
@@ -231,11 +278,12 @@ export function CharacterController() {
       }
       setNearbyProject(nearestPod)
 
-      if (keys.current.interact && !interactConsumed.current && nearestPod) {
+      const wantsInteract = keys.current.interact || mobileInput.interact
+      if (wantsInteract && !interactConsumed.current && nearestPod) {
         interactConsumed.current = true
         setActiveProject(nearestPod)
       }
-      if (!keys.current.interact) interactConsumed.current = false
+      if (!wantsInteract) interactConsumed.current = false
     }
   })
 
